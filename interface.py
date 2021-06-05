@@ -286,3 +286,4 @@ class Ui_ASF(object):
         item.setText(_translate("ASF", "кол-во"))
         item = self.tableWidget.horizontalHeaderItem(20)
         item.setText(_translate("ASF", "длина трубы"))
+        self.tableWidget.resizeColumnsToContents()
