@@ -58,11 +58,23 @@ class View:
         self.ui.tableWidget.setItem(self._current_position, 21, QTableWidgetItem(self.ui.lineEdit_pipe_length.text()))
         self._current_position += 1
 
+    def delete_date_in_table(self, positon):
+        try:
+            index = self.ui.tableWidget.selectedRanges()
+            index = index[0].bottomRow()
+            print(index)
+            self.ui.tableWidget.removeRow(index)
+            self._current_position -= 1
+        except IndexError:
+            pass
+
     # must be last
     def main(self):
         # срабативыет при изменении в комбобоксе
         self.ui.comboBox_Dy.activated[int].connect(self.set_recomend_pipe)
         # срабатывает при нажатии кнопки добавить
         self.ui.pushButton_add.clicked.connect(self.controller.add_button_click)
+        # срабатывает при нажатии кнопки Удалить
+        self.ui.pushButton_delete.clicked.connect(self.delete_date_in_table)
         self.window.show()
         sys.exit(self.app.exec())
