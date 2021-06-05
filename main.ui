@@ -47,14 +47,14 @@
          <item row="1" column="0">
           <widget class="QLabel" name="label_2">
            <property name="text">
-            <string>Давление</string>
+            <string>Давление, Py</string>
            </property>
           </widget>
          </item>
          <item row="2" column="0">
           <widget class="QLabel" name="label_3">
            <property name="text">
-            <string>Условный проход Ду</string>
+            <string>Условный проход Dy</string>
            </property>
           </widget>
          </item>
@@ -283,6 +283,16 @@
            </property>
           </widget>
          </item>
+         <item row="3" column="2">
+          <widget class="QLabel" name="label_9">
+           <property name="text">
+            <string>Обозначение</string>
+           </property>
+          </widget>
+         </item>
+         <item row="3" column="3">
+          <widget class="QLineEdit" name="lineEdit_name"/>
+         </item>
         </layout>
        </item>
        <item>
@@ -360,7 +370,119 @@
      </layout>
     </item>
     <item>
-     <widget class="QTableView" name="tableView"/>
+     <widget class="QTableWidget" name="tableWidget">
+      <attribute name="horizontalHeaderMinimumSectionSize">
+       <number>50</number>
+      </attribute>
+      <attribute name="horizontalHeaderDefaultSectionSize">
+       <number>81</number>
+      </attribute>
+      <column>
+       <property name="text">
+        <string>Обозначение</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>Dy</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>Py</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>тип</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>масса</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>диаметр</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>толщина</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>Ответный</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>тип</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>масса</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>толщина</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>кол-во</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>Новый столбец</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>крепеж</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>длина шпильки</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>кол-во</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>шайбы кол-во</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>Новый столбец</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>прокладка</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>кол-во</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>длина трубы</string>
+       </property>
+      </column>
+     </widget>
     </item>
    </layout>
   </widget>
