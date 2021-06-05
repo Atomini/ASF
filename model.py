@@ -86,6 +86,7 @@ class Model:
 
         elif answer_flange == "Ответный":
             if flange_type == 1:
+                pass
 
 
 
