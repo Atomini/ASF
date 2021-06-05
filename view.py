@@ -26,13 +26,16 @@ class View:
         return gost, pressure, Dy, flange_type, answer_flange, number, pipe_length, pipe, name
 
     def set_recomend_pipe(self):
+        """Подставляет рекомендуемое значение для трубы в поле ввода"""
         Dy = self.ui.comboBox_Dy.currentText()
         pipe = self.controller.recomend_pipe(Dy)
         self.ui.lineEdit_pipe.setText(pipe)
 
     # must be last
     def main(self):
+        # срабативыет при изменении в комбобоксе
         self.ui.comboBox_Dy.activated[int].connect(self.set_recomend_pipe)
+        # срабатывает при нажатии кнопки добавить
         self.ui.pushButton_add.clicked.connect(self.controller.add_button_click)
         self.window.show()
         sys.exit(self.app.exec())

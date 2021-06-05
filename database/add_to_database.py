@@ -15,7 +15,7 @@ rb = xlrd.open_workbook(way_to_exel, formatting_info=True, on_demand=True)
 
 # Добавляем фланцы и заглушки
 def add_flange():
-    pressure = {0: 0.6, 1: 1.0, 2: 1.6, 3: 2.5}
+    pressure = {0: 0.25, 1: 0.6, 2: 1.0, 3: 1.6, 4: 2.5}
     for i in range(0, 5):
         # выбираем активный лист
         sheet = rb.sheet_by_index(i)

@@ -9,13 +9,13 @@ class Controller:
         self.view = View(self)
 
     def add_button_click(self):
-        current = self.view.current_select()
-        self.model.select_from_db(current)
+        """Срабативает при нажатиии кнопки Добавить"""
+        current = self.view.current_select()    # получает значения из полей
+        self.model.select_from_db(current)      # передает значения в модель
 
     def recomend_pipe(self, dy):
+        """Срабативаеит при изменениях в combobox_dy. передает в модель текущее значение комбобокса"""
         return self.model.select_recomend_pipe(dy)
-
-
 
 
     # must be last
