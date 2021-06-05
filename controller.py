@@ -8,10 +8,23 @@ class Controller:
         self.model = Model()
         self.view = View(self)
 
-    def start_app(self):
-        app = self.view
+    def add_button_click(self):
+        current = self.view.current_select()
+        self.model.select_from_db(current)
+
+    def recomend_pipe(self, dy):
+        return self.model.select_recomend_pipe(dy)
+
+
+
+
+    # must be last
+    def start(self):
+        self.view.main()
 
 
 if __name__ == '__main__':
     controller = Controller()
-    controller.start_app()
+
+    # must be last
+    controller.start()

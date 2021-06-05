@@ -111,6 +111,8 @@ class Ui_ASF(object):
         self.gridLayout.addWidget(self.label_9, 3, 2, 1, 1)
         self.lineEdit_name = QtWidgets.QLineEdit(self.groupBox)
         self.lineEdit_name.setObjectName("lineEdit_name")
+
+
         self.gridLayout.addWidget(self.lineEdit_name, 3, 3, 1, 1)
         self.horizontalLayout.addLayout(self.gridLayout)
         spacerItem = QtWidgets.QSpacerItem(168, 20, QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Minimum)
@@ -287,3 +289,4 @@ class Ui_ASF(object):
         item = self.tableWidget.horizontalHeaderItem(20)
         item.setText(_translate("ASF", "длина трубы"))
         self.tableWidget.resizeColumnsToContents()
+        self.lineEdit_pipe.setText('20x2.5')

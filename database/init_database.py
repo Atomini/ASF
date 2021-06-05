@@ -83,7 +83,7 @@ with conn:
                     FOREIGN KEY (Dy, pressure) REFERENCES flange(Dy, pressure)
                 )""")
     # Труба
-    cur.execute(""" CREATE TABLE IF NOT EXISTS gasket(
+    cur.execute(""" CREATE TABLE IF NOT EXISTS pipe(
                     Dy       TEXT,
                     size     TEXT,
                     FOREIGN KEY (Dy) REFERENCES flange(Dy)
