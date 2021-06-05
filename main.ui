@@ -384,6 +384,11 @@
       </column>
       <column>
        <property name="text">
+        <string>ГОСТ</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
         <string>Dy</string>
        </property>
       </column>
@@ -439,11 +444,6 @@
       </column>
       <column>
        <property name="text">
-        <string>Новый столбец</string>
-       </property>
-      </column>
-      <column>
-       <property name="text">
         <string>крепеж</string>
        </property>
       </column>
@@ -464,7 +464,7 @@
       </column>
       <column>
        <property name="text">
-        <string>Новый столбец</string>
+        <string>гайки кол-во</string>
        </property>
       </column>
       <column>
@@ -475,6 +475,11 @@
       <column>
        <property name="text">
         <string>кол-во</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>труба</string>
        </property>
       </column>
       <column>
