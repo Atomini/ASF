@@ -11,7 +11,8 @@ class Controller:
     def add_button_click(self):
         """Срабативает при нажатиии кнопки Добавить"""
         current = self.view.current_select()    # получает значения из полей
-        self.model.select_from_db(current)      # передает значения в модель
+        result = self.model.select_from_db(current)      # передает значения в модель и возвращает результаты
+        self.view.add_date_in_table(result)
 
     def recomend_pipe(self, dy):
         """Срабативаеит при изменениях в combobox_dy. передает в модель текущее значение комбобокса"""

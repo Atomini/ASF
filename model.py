@@ -20,12 +20,30 @@ class Model:
             flange = self.get_flange_value_from_db(pressure_float, Dy, "flange_12820")
         elif gost == "12821 (сапожковый)":
             flange = self.get_flange_value_from_db(pressure_float, Dy, "flange_12821")
+
         gasket = self.get_gasket_from_db(Dy, pressure_float, flange_type)
         bolt = flange[12]
-        pin = self.get_metiz(bolt=bolt)
+        metiz = self.get_metiz(bolt=bolt)
         flange_answer = self.get_answer_flange(Dy, pressure_float, answer_flange, flange_type)
 
+        # return block
+        ret_Dy = flange[0]
+        Py = flange[1]
+        mass = None
+        D = flange[2]
+        thickness = None
+        ret_answer_flange = None
+        ret_type_answer = None
+        mass_answer = None
+        thickness_answer = None
+        ret_bolt = flange[12]
+        pin_length = None
+        pin_number = flange[8]
+        washer = flange[8] * 2
+        ret_gasket = gasket[4]
 
+        return ret_Dy, Py, mass, D, thickness, ret_answer_flange, ret_type_answer, mass_answer, thickness_answer, \
+               ret_bolt, pin_length, pin_number, washer, ret_gasket
 
     def select_recomend_pipe(self, pipes) -> str:
         """Получает из БД размер трубы по Ду"""
@@ -87,9 +105,6 @@ class Model:
         elif answer_flange == "Ответный":
             if flange_type == 1:
                 pass
-
-
-
 
 
 if __name__ == '__main__':
