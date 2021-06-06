@@ -18,6 +18,10 @@ class Controller:
         """Срабативаеит при изменениях в combobox_dy. передает в модель текущее значение комбобокса"""
         return self.model.select_recomend_pipe(dy)
 
+    def save_button_click(self):
+        data = self.view.save_data_to_exel()
+        self.model.save_to_exel(data)
+
 
     # must be last
     def start(self):

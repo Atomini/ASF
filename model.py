@@ -1,7 +1,8 @@
 from __future__ import annotations
 from pathlib import Path
 import sqlite3 as sql
-
+import xlsxwriter
+import datetime
 
 class Model:
 
@@ -213,6 +214,33 @@ class Model:
     def pin_legth(self, thickness, thickness_answer, metiz):
         rezult = int(thickness)+int(thickness_answer)+3+int(metiz[0])+int(metiz[2])+6
         return rezult
+
+    def save_to_exel(self, data):
+        date = datetime.datetime.now().strftime("(%Y_%m_%d__%H.%M.%S)")
+
+        workbook = xlsxwriter.Workbook('фланцы_' + str(date) + '.xlsx')
+        worksheet = workbook.add_worksheet()
+
+        table_Horiz_Lable = (
+            'Обозначение', 'ГОСТ', 'Ду', 'Py', 'тип', 'масса', 'диаметр', 'толщина', 'ответный', 'тип', 'масса',
+            'толщина', 'кол-во', 'крепеж', 'длина шпильки', 'кол-во', 'шайбы кол-во', 'гайка кол-во', 'прокладка',
+            'кол-во', 'труба', 'длина трубы')
+
+        position_x = 0
+        position_y = 0
+        for name in table_Horiz_Lable:
+            worksheet.write(position_y, position_x, name)
+            position_x += 1
+        position_x = 0
+        position_y += 1
+        for row in data:
+            for item in row:
+                worksheet.write(position_y, position_x, item)
+                position_x += 1
+            position_x = 0
+            position_y += 1
+
+        workbook.close()
 
 
 if __name__ == '__main__':

@@ -67,6 +67,14 @@ class View:
         except IndexError:
             pass
 
+    def save_data_to_exel(self):
+        data = []
+        for i in range(0, self._current_position):
+            data.append([])
+            for j in range(0, 22):
+                data[i].append(self.ui.tableWidget.item(i, j).text())
+        return data
+
     # must be last
     def main(self):
         # срабативыет при изменении в комбобоксе
@@ -75,5 +83,8 @@ class View:
         self.ui.pushButton_add.clicked.connect(self.controller.add_button_click)
         # срабатывает при нажатии кнопки Удалить
         self.ui.pushButton_delete.clicked.connect(self.delete_date_in_table)
+        # срабатывает при нажатии кнопки сохранить
+        self.ui.pushButton_save.clicked.connect(self.controller.save_button_click)
+        # must be last
         self.window.show()
         sys.exit(self.app.exec())
