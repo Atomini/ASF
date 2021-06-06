@@ -10,16 +10,49 @@ class Model:
         self.conn = sql.connect(way_to_db)
 
     def select_from_db(self, *args):
-        """Выбираем из БД данние"""
+        """
+        Выбираем из БД данние
+        :param args: gost           - гост фланца
+                     pressure       - Условное давление Py
+                     Dy             - Значение Ду
+                     flange_type    - тип основного фланца
+                     answer_flange  - тип ответного фланца
+                     number         - количество фланцевых соеденений
+                     pipe_length    - длина трубы
+                     pipe           - размер трубы
+                     name           - обозначение фленцевого соедения
+        :return:
+        ret_Dy              -  Значение Ду
+        Py                  -  Условное давление Py
+        mass                -  масса основного фланца
+        D                   -  наружный диаметр основного фланца
+        thickness           -  толщина остновного фланца
+        ret_answer_flange   - ответный фланец ответный/заглушка/нет
+        ret_type_answer     - тип ответного фланца
+        mass_answer         - масса ответного фланца
+        thickness_answer    - толщина ответного фланца
+        ret_bolt            - размер метизов
+        pin_length          - длина шпильки
+        pin_number          - Количество шпилек
+        washer              - количество гаек / шайб
+        ret_gasket          - размер прокладки
+        """
+
         gost, pressure, Dy, flange_type, answer_flange, number, pipe_length, pipe, name = args[0]
-        # конвертируем строку в float
+
+        # конвертируем Py из строки в float
         pressure_convert = {"0,1-0,25 МПа": 0.25, "0,6 МПа": 0.6, "1,0 МПа": 1.0, "1,6 МПа": 1.6, "2,5 МПа": 2.5}
         pressure_float = pressure_convert.get(pressure)
 
         if gost == "12820 (плоский)":
             flange = self.get_flange_value_from_db(pressure_float, Dy, "flange_12820")
+            flange_mass = self.get_flange_mass(flange_type, "flange_12820", flange)
+            flange_thickness = self.get_flange_thickness(flange_type, "flange_12820", flange)
+
         elif gost == "12821 (сапожковый)":
             flange = self.get_flange_value_from_db(pressure_float, Dy, "flange_12821")
+            flange_mass = self.get_flange_mass(flange_type, "flange_12821", flange)
+            flange_thickness = self.get_flange_thickness(flange_type, "flange_12820", flange)
 
         gasket = self.get_gasket_from_db(Dy, pressure_float, flange_type)
         bolt = flange[12]
@@ -29,7 +62,7 @@ class Model:
         # return block
         ret_Dy = flange[0]
         Py = flange[1]
-        mass = None
+        mass = flange_mass
         D = flange[2]
         thickness = None
         ret_answer_flange = None
@@ -64,7 +97,7 @@ class Model:
             return flange[0]
 
     def get_gasket_from_db(self, Dy, pressure, flange_type):
-
+        """Получем из БД размеры для прокладки в зависимости от Ду, давления, типа фланца"""
         if flange_type == 1:
             index = 0
         else:
@@ -106,9 +139,32 @@ class Model:
             if flange_type == 1:
                 pass
 
+    def get_flange_mass(self, flange_type, gost, *flange):
+
+        flange = flange[0]
+        if gost == "flange_12820":
+            if flange_type == "1":
+                mass = flange[17]
+            elif flange_type == "2":
+                mass = flange[18]
+            elif flange_type == "3":
+                mass = flange[19]
+        elif gost == "flange_12821":
+            if flange_type == "1":
+                mass = flange[19]
+            elif flange_type == "2":
+                mass = flange[20]
+            elif flange_type == "3":
+                mass = flange[21]
+        return mass
+
+    def get_flange_thickness(self, flange_type, param, *flange):
+        pass
+
 
 if __name__ == '__main__':
     mod = Model()
-    mod.get_flange_value_from_db(1.0, 100, "flange_12821")
+    flange = mod.get_flange_value_from_db(1.0, 100, "flange_12820")
     mod.get_gasket_from_db(200, 0.6, 1)
     mod.get_metiz("M10")
+    mod.get_flange_mass(2, "flange_12820", flange)

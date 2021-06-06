@@ -42,7 +42,7 @@ class View:
         self.ui.tableWidget.setItem(self._current_position, 5, QTableWidgetItem(str(date[2])))
         self.ui.tableWidget.setItem(self._current_position, 6, QTableWidgetItem(str(date[3])))
         self.ui.tableWidget.setItem(self._current_position, 7, QTableWidgetItem(str(date[4])))
-        self.ui.tableWidget.setItem(self._current_position, 8, QTableWidgetItem(str(date[5])))
+        self.ui.tableWidget.setItem(self._current_position, 8, QTableWidgetItem(self.ui.comboBox_answer.currentText()))
         self.ui.tableWidget.setItem(self._current_position, 9, QTableWidgetItem(str(date[6])))
         self.ui.tableWidget.setItem(self._current_position, 10, QTableWidgetItem(str(date[7])))
         self.ui.tableWidget.setItem(self._current_position, 11, QTableWidgetItem(str(date[8])))
@@ -62,7 +62,6 @@ class View:
         try:
             index = self.ui.tableWidget.selectedRanges()
             index = index[0].bottomRow()
-            print(index)
             self.ui.tableWidget.removeRow(index)
             self._current_position -= 1
         except IndexError:
