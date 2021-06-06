@@ -53,7 +53,7 @@ class View:
         self.ui.tableWidget.setItem(self._current_position, 16, QTableWidgetItem(str(date[12])))
         self.ui.tableWidget.setItem(self._current_position, 17, QTableWidgetItem(str(date[12])))
         self.ui.tableWidget.setItem(self._current_position, 18, QTableWidgetItem(str(date[13])))
-        self.ui.tableWidget.setItem(self._current_position, 19, QTableWidgetItem(self.ui.spinBox_number.text()))
+        self.ui.tableWidget.setItem(self._current_position, 19, QTableWidgetItem(str(date[14])))
         self.ui.tableWidget.setItem(self._current_position, 20, QTableWidgetItem(self.ui.lineEdit_pipe.text()))
         self.ui.tableWidget.setItem(self._current_position, 21, QTableWidgetItem(self.ui.lineEdit_pipe_length.text()))
         self._current_position += 1
