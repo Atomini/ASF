@@ -58,16 +58,20 @@ class View:
         self.ui.tableWidget.setItem(self._current_position, 21, QTableWidgetItem(self.ui.lineEdit_pipe_length.text()))
         self._current_position += 1
 
-    def delete_date_in_table(self, positon):
+    def delete_date_in_table(self):
         try:
-            index = self.ui.tableWidget.selectedRanges()
-            index = index[0].bottomRow()
+            if self.ui.tableWidget.selectedRanges():
+                index = self.ui.tableWidget.selectedRanges()
+                index = index[0].bottomRow()
+            else:
+                index = 0
             self.ui.tableWidget.removeRow(index)
             self._current_position -= 1
-        except IndexError:
-            pass
+        except IndexError as error:
+            print(error)
 
-    def save_data_to_exel(self):
+    def save_data_to_exel(self) -> list:
+        """Возвращает список с параметрами из таблици"""
         data = []
         for i in range(0, self._current_position):
             data.append([])

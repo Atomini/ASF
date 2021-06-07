@@ -4,6 +4,7 @@ import sqlite3 as sql
 import xlsxwriter
 import datetime
 
+
 class Model:
 
     def __init__(self):
@@ -13,7 +14,7 @@ class Model:
 
     def select_from_db(self, *args):
         """
-        Выбираем из БД данние
+        Выбираем из БД данние для заполнения TableWidget
         :param args: gost           - гост фланца
                      pressure       - Условное давление Py
                      Dy             - Значение Ду
@@ -47,14 +48,24 @@ class Model:
         pressure_float = pressure_convert.get(pressure)
 
         if gost == "12820 (плоский)":
+
             flange = self.get_flange_value_from_db(pressure_float, Dy, "flange_12820")
+            # flahge: index  0   1          2   3   4   5   6   7   8   9   10  11
+            #         param  Dy  pressure   D   D1  D2  D4  D6  d   n   h   h1  h2
+            #               12    13  14  15   16       17      18
+            #               bolt  Dy  Py  d_in mass_1   mass_2  mass_3
             flange_mass = self.get_flange_mass(flange_type, "flange_12820", flange)
             flange_thickness = self.get_flange_thickness(flange_type, "flange_12820", flange)
             flange_answer = self.get_answer_flange(Dy, pressure_float, answer_flange, flange_type,
                                                    "flange_12820", flange)
 
         elif gost == "12821 (сапожковый)":
+
             flange = self.get_flange_value_from_db(pressure_float, Dy, "flange_12821")
+            # flahge: index  0   1          2   3   4   5   6   7   8   9   10  11
+            #         param  Dy  pressure   D   D1  D2  D4  D6  d   n   h   h1  h2
+            #                12    13  14  15   16   17  18   19       20      21
+            #                bolt  Dy  Py  d1   h4   Dm  Dn   mass_1   mass_2  mass_3
             flange_mass = self.get_flange_mass(flange_type, "flange_12821", flange)
             flange_thickness = self.get_flange_thickness(flange_type, "flange_12821", flange)
             flange_answer = self.get_answer_flange(Dy, pressure_float, answer_flange, flange_type,
@@ -210,9 +221,8 @@ class Model:
                 thickness = flange[10] + flange[16]
         return thickness
 
-
     def pin_legth(self, thickness, thickness_answer, metiz):
-        rezult = int(thickness)+int(thickness_answer)+3+int(metiz[0])+int(metiz[2])+6
+        rezult = int(thickness) + int(thickness_answer) + 3 + int(metiz[0]) + int(metiz[2]) + 6
         return rezult
 
     def save_to_exel(self, data):
