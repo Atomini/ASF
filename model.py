@@ -16,7 +16,7 @@ class Model:
         """
         Выбираем из БД данние для заполнения TableWidget
         :param args: gost           - гост фланца
-                     pressure       - Условное давление Py
+                     pressure       - Условное давление result_Py
                      Dy             - Значение Ду
                      flange_type    - тип основного фланца
                      answer_flange  - тип ответного фланца
@@ -25,82 +25,76 @@ class Model:
                      pipe           - размер трубы
                      name           - обозначение фленцевого соедения
         :return:
-        ret_Dy              -  Значение Ду
-        Py                  -  Условное давление Py
-        mass                -  масса основного фланца
-        D                   -  наружный диаметр основного фланца
-        thickness           -  толщина остновного фланца
-        ret_answer_flange   - ответный фланец ответный/заглушка/нет
-        ret_type_answer     - тип ответного фланца
-        mass_answer         - масса ответного фланца
-        thickness_answer    - толщина ответного фланца
-        ret_bolt            - размер метизов
-        pin_length          - длина шпильки
-        pin_number          - Количество шпилек
-        washer              - количество гаек / шайб
-        ret_gasket          - размер прокладки
+        result_Dy               -  Значение Ду
+        result_Py               -  Условное давление result_Py
+        result_mass             -  масса основного фланца
+        result_D                -  наружный диаметр основного фланца
+        result_thickness        -  толщина остновного фланца
+        result_answer_flange    - ответный фланец ответный/заглушка/нет
+        result_type_answer      - тип ответного фланца
+        result_mass_answer      - масса ответного фланца
+        result_thickness_answer - толщина ответного фланца
+        result_bolt             - размер метизов
+        result_pin_length       - длина шпильки
+        result_pin_number       - Количество шпилек
+        result_washer           - количество гаек / шайб
+        result_gasket           - размер прокладки
         """
 
         gost, pressure, Dy, flange_type, answer_flange, number, pipe_length, pipe, name = args[0]
 
-        # конвертируем Py из строки в float
+        # конвертируем result_Py из строки в float
         pressure_convert = {"0,1-0,25 МПа": 0.25, "0,6 МПа": 0.6, "1,0 МПа": 1.0, "1,6 МПа": 1.6, "2,5 МПа": 2.5}
         pressure_float = pressure_convert.get(pressure)
 
         if gost == "12820 (плоский)":
-
-            flange = self.get_flange_value_from_db(pressure_float, Dy, "flange_12820")
-            # flahge: index  0   1          2   3   4   5   6   7   8   9   10  11
-            #         param  Dy  pressure   D   D1  D2  D4  D6  d   n   h   h1  h2
-            #               12    13  14  15   16       17      18
-            #               bolt  Dy  Py  d_in mass_1   mass_2  mass_3
-            flange_mass = self.get_flange_mass(flange_type, "flange_12820", flange)
-            flange_thickness = self.get_flange_thickness(flange_type, "flange_12820", flange)
-            flange_answer = self.get_answer_flange(Dy, pressure_float, answer_flange, flange_type,
-                                                   "flange_12820", flange)
+            main_flange = self.get_flange_value_from_db(pressure_float, Dy, "flange_12820")
+            # flange GOST = 12821: index  0   1          2   3   4   5   6   7   8   9   10  11    12    13  14  15   16
+            #                      param  Dy  pressure   D   D1  D2  D4  D6  d   n   h   h1  h2    bolt  Dy  Py  d1   h4
+            #                             17  18   19        20      21
+            #                             Dm  Dn   mass_1    mass_2  mass_3
 
         elif gost == "12821 (сапожковый)":
+            main_flange = self.get_flange_value_from_db(pressure_float, Dy, "flange_12821")
+            # flange  GOST = 12820: index  0   1          2   3   4   5   6   7   8   9   10  11  12    13  14  15
+            #               param          Dy  pressure   D   D1  D2  D4  D6  d   n   h   h1  h2  bolt  Dy  Py  d_in
+            #                              16       17      18
+            #                              mass_1   mass_2  mass_3
 
-            flange = self.get_flange_value_from_db(pressure_float, Dy, "flange_12821")
-            # flahge: index  0   1          2   3   4   5   6   7   8   9   10  11
-            #         param  Dy  pressure   D   D1  D2  D4  D6  d   n   h   h1  h2
-            #                12    13  14  15   16   17  18   19       20      21
-            #                bolt  Dy  Py  d1   h4   Dm  Dn   mass_1   mass_2  mass_3
-            flange_mass = self.get_flange_mass(flange_type, "flange_12821", flange)
-            flange_thickness = self.get_flange_thickness(flange_type, "flange_12821", flange)
-            flange_answer = self.get_answer_flange(Dy, pressure_float, answer_flange, flange_type,
-                                                   "flange_12821", flange)
-
+        flange_mass = self.get_flange_mass(flange_type, gost, main_flange)
+        flange_thickness = self.get_flange_thickness(flange_type, gost, main_flange)
+        flange_answer = self.get_answer_flange(Dy, pressure_float, answer_flange, flange_type, gost, main_flange)
         gasket = self.get_gasket_from_db(Dy, pressure_float, flange_type, answer_flange)
-        bolt = flange[12]
-        metiz = self.get_metiz(bolt, answer_flange, flange[8])
+        bolt = main_flange[12]
+        metiz = self.get_metiz(bolt, answer_flange, main_flange[8])
 
         # return block
-        ret_Dy = flange[0]
-        Py = flange[1]
-        mass = flange_mass
-        D = flange[2]
-        thickness = flange_thickness
-        ret_answer_flange = flange_answer[0]
-        ret_type_answer = flange_answer[1]
-        mass_answer = flange_answer[2]
-        thickness_answer = flange_answer[3]
-        pin_number = metiz[3]
-        washer = metiz[4]
+        result_Dy = main_flange[0]
+        result_Py = main_flange[1]
+        result_mass = flange_mass
+        result_D = main_flange[2]
+        result_thickness = flange_thickness
+        result_answer_flange = flange_answer[0]
+        result_type_answer = flange_answer[1]
+        result_mass_answer = flange_answer[2]
+        result_thickness_answer = flange_answer[3]
+        result_pin_number = metiz[3]
+        result_washer = metiz[4]
 
         if answer_flange == 'Нет':
-            ret_pin_length = "-"
-            ret_bolt = "-"
-            ret_gasket = "-"
-            ret_gasket_number = "-"
+            result_pin_length = "-"
+            result_bolt = "-"
+            result_gasket = "-"
+            result_gasket_number = "-"
         else:
-            ret_pin_length = self.pin_legth(thickness, thickness_answer, metiz)
-            ret_bolt = flange[12]
-            ret_gasket = gasket[4]
-            ret_gasket_number = number
+            result_pin_length = self.pin_legth(result_thickness, result_thickness_answer, metiz)
+            result_bolt = main_flange[12]
+            result_gasket = gasket[4]
+            result_gasket_number = number
 
-        return ret_Dy, Py, mass, D, thickness, ret_answer_flange, ret_type_answer, mass_answer, thickness_answer, \
-               ret_bolt, ret_pin_length, pin_number, washer, ret_gasket, ret_gasket_number
+        return result_Dy, result_Py, result_mass, result_D, result_thickness, result_answer_flange, result_type_answer,\
+               result_mass_answer, result_thickness_answer, result_bolt, result_pin_length, result_pin_number, \
+               result_washer, result_gasket, result_gasket_number
 
     def select_recomend_pipe(self, pipes) -> str:
         """Получает из БД размер трубы по Ду"""
@@ -168,7 +162,7 @@ class Model:
                 return answer_flange, flange_type, plug[0][18], plug[0][15]
 
         elif answer_flange == "Ответный":
-            if gost == "flange_12820":
+            if gost == "12820 (плоский)":
                 if flange_type == "1":
                     answer_flange_type = "1"
                 elif flange_type == "2":
@@ -176,7 +170,7 @@ class Model:
                 elif flange_type == "3":
                     answer_flange_type = "2"
 
-            elif gost == "flange_12821":
+            elif gost == "12821 (сапожковый)":
                 if flange_type == "1":
                     answer_flange_type = "1"
                 elif flange_type == "2":
@@ -190,14 +184,14 @@ class Model:
 
     def get_flange_mass(self, flange_type, gost, flange):
 
-        if gost == "flange_12820":
+        if gost == "12820 (плоский)":
             if flange_type == "1":
                 mass = flange[17]
             elif flange_type == "2":
                 mass = flange[18]
             elif flange_type == "3":
                 mass = flange[19]
-        elif gost == "flange_12821":
+        elif gost == "12821 (сапожковый)":
             if flange_type == "1":
                 mass = flange[19]
             elif flange_type == "2":
@@ -208,13 +202,13 @@ class Model:
 
     def get_flange_thickness(self, flange_type, gost, flange):
 
-        if gost == "flange_12820":
+        if gost == "12820 (плоский)":
             if flange_type == "1" or flange_type == "3":
                 thickness = flange[9] + flange[16]
             elif flange_type == "2":
                 thickness = flange[10] + flange[16]
 
-        elif gost == "flange_12821":
+        elif gost == "12821 (сапожковый)":
             if flange_type == "1" or flange_type == "3":
                 thickness = flange[9] + flange[16]
             elif flange_type == "2":
