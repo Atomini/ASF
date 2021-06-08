@@ -9,7 +9,6 @@ class Model:
 
     def __init__(self):
         way_to_db = Path(__file__).parent / 'flange.db'
-        print(way_to_db)
         self.conn = sql.connect(way_to_db)
 
     def select_from_db(self, *args):
@@ -131,7 +130,8 @@ class Model:
             return gasket[index]
 
     def get_metiz(self, bolt, answer_flange, number):
-
+        """Получае значения параметров для метизов
+        :return list(высоту болта, минимальную длину шпильки, толщину шайбы, количество болтлв, количество гаек/шайб)"""
         if answer_flange == "Нет":
             return "-", "-", "-", "-", "-"
 
@@ -148,7 +148,9 @@ class Model:
             return nut[0][0], pin[0][0], washer[0][0], pin_number, nut_number
 
     def get_answer_flange(self, Dy, pressure_float, answer_flange, flange_type, gost, flange):
-
+        """Возвращает дание ответного фланца
+        :return list(название ответного фланца (ответныц/заглушка/нет), тип ответного фланца, масса ответного фланцф,
+                     толщина ответного фланца)"""
         if answer_flange == "Нет":
             return "-", "-", "-", "-"
 
@@ -183,7 +185,7 @@ class Model:
             return answer_flange, answer_flange_type, answer_flange_mass, answer_flange_thickness
 
     def get_flange_mass(self, flange_type, gost, flange):
-
+        """Возвращает значение масси фланца в зависимости от типа фланца и госта"""
         if gost == "12820 (плоский)":
             if flange_type == "1":
                 mass = flange[17]
@@ -201,7 +203,7 @@ class Model:
         return mass
 
     def get_flange_thickness(self, flange_type, gost, flange):
-
+        """Возвращает толщину фланца в зависимости от типа фланца и госта"""
         if gost == "12820 (плоский)":
             if flange_type == "1" or flange_type == "3":
                 thickness = flange[9] + flange[16]
@@ -216,10 +218,12 @@ class Model:
         return thickness
 
     def pin_legth(self, thickness, thickness_answer, metiz):
+        """Расчитивает длину шпильки"""
         rezult = int(thickness) + int(thickness_answer) + 3 + int(metiz[0]) + int(metiz[2]) + 6
         return rezult
 
     def save_to_exel(self, data):
+        """Сохраняет дание в exel файл"""
         date = datetime.datetime.now().strftime("(%Y_%m_%d__%H.%M.%S)")
 
         workbook = xlsxwriter.Workbook('фланцы_' + str(date) + '.xlsx')
@@ -247,11 +251,12 @@ class Model:
         workbook.close()
 
 
-if __name__ == '__main__':
-    mod = Model()
-    flange = mod.get_flange_value_from_db(1.0, 100, "flange_12820")
-    mod.get_gasket_from_db(200, 0.6, 1)
-    mod.get_metiz("M10")
-    mod.get_flange_mass("2", "flange_12820", flange)
-    mod.get_flange_thickness("1", "flange_12820", flange)
-    mod.get_answer_flange(100, 2.5, "Ответный", "2", "flange_12820", flange)
+# if __name__ == '__main__':
+#
+#     mod = Model()
+#     flange = mod.get_flange_value_from_db(1.0, 100, "flange_12820")
+#     mod.get_gasket_from_db(200, 0.6, 1)
+#     mod.get_metiz("M10")
+#     mod.get_flange_mass("2", "flange_12820", flange)
+#     mod.get_flange_thickness("1", "flange_12820", flange)
+#     mod.get_answer_flange(100, 2.5, "Ответный", "2", "flange_12820", flange)
