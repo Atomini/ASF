@@ -23,11 +23,11 @@ class Model:
                      pipe           - размер трубы
                      name           - обозначение фленцевого соедения
         :return:
-        result_Dy               -  Значение Ду
-        result_Py               -  Условное давление result_Py
-        result_mass             -  масса основного фланца
-        result_D                -  наружный диаметр основного фланца
-        result_thickness        -  толщина остновного фланца
+        result_Dy               - Значение Ду
+        result_Py               - Условное давление result_Py
+        result_mass             - масса основного фланца
+        result_D                - наружный диаметр основного фланца
+        result_thickness        - толщина остновного фланца
         result_answer_flange    - ответный фланец ответный/заглушка/нет
         result_type_answer      - тип ответного фланца
         result_mass_answer      - масса ответного фланца
@@ -90,7 +90,7 @@ class Model:
             result_gasket = gasket[4]
             result_gasket_number = number
 
-        return result_Dy, result_Py, result_mass, result_D, result_thickness, result_answer_flange, result_type_answer, \
+        return result_Dy, result_Py, result_mass, result_D, result_thickness, result_answer_flange, result_type_answer,\
                result_mass_answer, result_thickness_answer, result_bolt, result_pin_length, result_pin_number, \
                result_washer, result_gasket, result_gasket_number
 

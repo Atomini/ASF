@@ -64,7 +64,7 @@ class View:
                 index = self.ui.tableWidget.selectedRanges()
                 index = index[0].bottomRow()
             else:
-                index = 0
+                index = self._current_position-1
             self.ui.tableWidget.removeRow(index)
             self._current_position -= 1
         except IndexError as error:
