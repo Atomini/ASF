@@ -1,4 +1,3 @@
-from __future__ import annotations
 from pathlib import Path
 import sqlite3 as sql
 import xlsxwriter
@@ -91,7 +90,7 @@ class Model:
             result_gasket = gasket[4]
             result_gasket_number = number
 
-        return result_Dy, result_Py, result_mass, result_D, result_thickness, result_answer_flange, result_type_answer,\
+        return result_Dy, result_Py, result_mass, result_D, result_thickness, result_answer_flange, result_type_answer, \
                result_mass_answer, result_thickness_answer, result_bolt, result_pin_length, result_pin_number, \
                result_washer, result_gasket, result_gasket_number
 
@@ -164,21 +163,12 @@ class Model:
                 return answer_flange, flange_type, plug[0][18], plug[0][15]
 
         elif answer_flange == "Ответный":
-            if gost == "12820 (плоский)":
-                if flange_type == "1":
-                    answer_flange_type = "1"
-                elif flange_type == "2":
-                    answer_flange_type = "3"
-                elif flange_type == "3":
-                    answer_flange_type = "2"
-
-            elif gost == "12821 (сапожковый)":
-                if flange_type == "1":
-                    answer_flange_type = "1"
-                elif flange_type == "2":
-                    answer_flange_type = "3"
-                elif flange_type == "3":
-                    answer_flange_type = "2"
+            if flange_type == "1":
+                answer_flange_type = "1"
+            elif flange_type == "2":
+                answer_flange_type = "3"
+            elif flange_type == "3":
+                answer_flange_type = "2"
 
             answer_flange_mass = self.get_flange_mass(answer_flange_type, gost, flange)
             answer_flange_thickness = self.get_flange_thickness(answer_flange_type, gost, flange)
@@ -249,7 +239,6 @@ class Model:
             position_y += 1
 
         workbook.close()
-
 
 # if __name__ == '__main__':
 #
